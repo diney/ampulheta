@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value="/tempos")
-public class TempoResource {
+public class TimeResource {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public String listar() {
