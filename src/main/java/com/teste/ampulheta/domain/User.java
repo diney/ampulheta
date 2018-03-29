@@ -2,28 +2,42 @@ package com.teste.ampulheta.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.validation.constraints.NotEmpty;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.teste.ampulheta.domain.enums.Perfil;
 @Entity
 public class User implements Serializable {	
 	private static final long serialVersionUID = 1L;
+	
+		
 	@Id	
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer user_id;
+	@NotEmpty(message="Preenchimento é obrigatório")	
 	private String name;
+	@NotEmpty(message="Preenchimento é obrigatório")
 	private String email;
+	@NotEmpty(message="Preenchimento é obrigatório")
 	private String login;
+	@JsonIgnore
 	private String password;
-	@JsonBackReference 
+	@JsonIgnore 
 	@ManyToMany
 		@JoinTable(name = "USER_PROJECT",
 				joinColumns = @JoinColumn(name = "userId"),
@@ -31,17 +45,23 @@ public class User implements Serializable {
 		)
 	private List<Project> projects = new ArrayList<>();
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@CollectionTable(name="PERFIS")
+	private Set<Integer> perfis = new HashSet<>();
+	
 	public User() {
+		addPerfil(Perfil.USUARIO);
 		
 	}
 	
-	public User(Integer user_id, String name, String email, String login, String password) {
+	public User(Integer user_id, String name, String email, String login,  String password) {
 		super();
 		this.user_id = user_id;
 		this.name = name;
 		this.email = email;
 		this.login = login;
 		this.password = password;
+		addPerfil(Perfil.USUARIO);
 	}
 
 	public Integer getUser_id() {
@@ -90,6 +110,17 @@ public class User implements Serializable {
 
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+	
+	
+
+	public Set<Perfil> getPerfis(){
+		return perfis.stream().map(x->Perfil.toEnum(x)).collect(Collectors.toSet());		
+	}
+	
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil.getCod());
+		
 	}
 
 	@Override

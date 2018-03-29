@@ -26,6 +26,12 @@ public class ProjectService {
 	public List<Project> findAll(){
 		return repo.findAll();
 	}
+	
+	
+	public Project insert(Project obj) {
+		obj.setproject_id(null);
+		return repo.save(obj);
+	}
 
 
 }

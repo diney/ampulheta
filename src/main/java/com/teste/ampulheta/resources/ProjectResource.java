@@ -1,15 +1,17 @@
 package com.teste.ampulheta.resources;
 
+import java.net.URI;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.teste.ampulheta.domain.Project;
 import com.teste.ampulheta.dto.ProjectDTO;
@@ -27,7 +29,8 @@ public class ProjectResource {
 	private ProjectService service;
 	
 	@RequestMapping(value="/{project_id}", method=RequestMethod.GET)
-	public ResponseEntity<?> projectById(@PathVariable Integer project_id) throws ObjectNotFoundException {			
+	public ResponseEntity<?> projectById(@PathVariable Integer project_id) throws ObjectNotFoundException {	
+		
 		Project obj = service.findById(project_id);			   
 		return ResponseEntity.ok().body(obj);
 	}
@@ -37,6 +40,15 @@ public class ProjectResource {
 		List<Project> list = service.findAll();
 		List<ProjectDTO> listDTO = list.stream().map(obj -> new ProjectDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
+	}
+	
+	@RequestMapping( method=RequestMethod.POST)
+	public ResponseEntity<Void> insert(@RequestBody Project obj){		
+		obj = service.insert(obj);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().
+		path("/{project_id}").buildAndExpand(obj.getproject_id()).toUri();
+		return ResponseEntity.created(uri).build();
+		
 	}
 	
 	

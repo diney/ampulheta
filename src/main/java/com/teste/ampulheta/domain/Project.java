@@ -9,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 public class Project implements Serializable {
 
@@ -21,7 +19,7 @@ public class Project implements Serializable {
 	private String title;
 	private String description;
 	
-	@JsonManagedReference
+	
 	@ManyToMany(mappedBy="projects")
 	private List<User> user_id = new ArrayList<>();
 	
