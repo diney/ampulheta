@@ -4,11 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
 @Entity
 public class Project implements Serializable {
 
@@ -22,6 +25,10 @@ public class Project implements Serializable {
 	
 	@ManyToMany(mappedBy="projects")
 	private List<User> user_id = new ArrayList<>();
+	
+	@OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+	 private List<Tempo> tempos;
+
 	
 	public Project() {
 	}
@@ -59,6 +66,19 @@ public class Project implements Serializable {
 	public void setUser_id(List<User> user_id) {
 		this.user_id = user_id;
 	}
+	
+
+
+	public List<Tempo> getTempos() {
+		return tempos;
+	}
+
+
+	public void setTempos(List<Tempo> tempos) {
+		this.tempos = tempos;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

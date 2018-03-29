@@ -7,8 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
-public class Time implements Serializable {
+public class Tempo implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	@Id	
@@ -17,12 +20,32 @@ public class Time implements Serializable {
 	private Date started_at;
 	private Date ended_at;
 	
-	public Time(Integer id, Date started_at, Date ended_at) {
+	@JsonIgnore 
+	@ManyToOne	
+	private Project project;	
+	
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public Tempo() {
+		
+	}
+	
+	public Tempo(Integer id, Date started_at, Date ended_at ,Project project) {
 		super();
 		this.id = id;
 		this.started_at = started_at;
 		this.ended_at = ended_at;
+		this.project = project;
+		
 	}
+	
+	
 
 	public Integer getId() {
 		return id;
@@ -64,7 +87,7 @@ public class Time implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Time other = (Time) obj;
+		Tempo other = (Tempo) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

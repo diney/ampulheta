@@ -23,7 +23,7 @@ public class UserSS implements UserDetails{
 	public UserSS() {		
 		
 	}	
-	//(user.getUser_id(),user.getEmail(),user.getLogin(),user.getPassword(),user.getPerfis())
+	
 	public UserSS(Integer id, String email,String login, String password, 
 			Set<Perfil> perfis) {
 		super();

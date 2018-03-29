@@ -37,6 +37,8 @@ public class User implements Serializable {
 	private String login;
 	@JsonIgnore
 	private String password;
+	
+	
 	@JsonIgnore 
 	@ManyToMany
 		@JoinTable(name = "USER_PROJECT",
@@ -54,6 +56,7 @@ public class User implements Serializable {
 		
 	}
 	
+	
 	public User(Integer user_id, String name, String email, String login,  String password) {
 		super();
 		this.user_id = user_id;
@@ -62,6 +65,7 @@ public class User implements Serializable {
 		this.login = login;
 		this.password = password;
 		addPerfil(Perfil.USUARIO);
+		
 	}
 
 	public Integer getUser_id() {
